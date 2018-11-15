@@ -1,0 +1,1 @@
+sudo docker exec -t resume-api bin/python -m django $1
