@@ -8,5 +8,6 @@ RUN bin/pip install --upgrade pip
 RUN bin/pip install Django
 RUN bin/pip install djangorestframework
 RUN bin/pip install mysqlclient
+RUN bin/pip install django-cors-headers
 WORKDIR /opt/resume-api/api
 CMD while true; do sleep 10; done
