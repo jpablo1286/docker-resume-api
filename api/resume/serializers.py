@@ -7,6 +7,7 @@ from resume.models import Degree
 from resume.models import Language
 from resume.models import Certifications
 from resume.models import PersonalData
+from resume.models import Skill
 
 class KeysSerializer(serializers.ModelSerializer):
     class Meta:
@@ -37,3 +38,8 @@ class CertificationsSerializer(serializers.ModelSerializer):
     class Meta:
         model = Certifications
         fields = ('name', 'institution','date')
+
+class SkillSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Skill
+        fields = ('name', 'description')

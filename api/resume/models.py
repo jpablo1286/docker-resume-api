@@ -25,6 +25,10 @@ class Language(models.Model):
     reading = models.IntegerField()
     spoken = models.IntegerField()
 
+class Skill(models.Model):
+    name = models.CharField(max_length=250)
+    description = models.CharField(max_length=250)
+
 class Certifications(models.Model):
     name = models.CharField(max_length=250)
     institution = models.CharField(max_length=250)
