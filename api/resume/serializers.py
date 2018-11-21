@@ -8,6 +8,10 @@ from resume.models import Language
 from resume.models import Certifications
 from resume.models import PersonalData
 from resume.models import Skill
+from resume.models import Award
+from resume.models import Project
+from resume.models import Expirience
+from resume.models import Code
 
 class KeysSerializer(serializers.ModelSerializer):
     class Meta:
@@ -43,3 +47,23 @@ class SkillSerializer(serializers.ModelSerializer):
     class Meta:
         model = Skill
         fields = ('name', 'description')
+
+class AwardSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Award
+        fields = ('name', 'description','institution','date')
+
+class ExpirienceSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Expirience
+        fields = ('name','institution','description','date')
+
+class ProjectSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Project
+        fields = ('name','institution','description','date')
+
+class CodeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Code
+        fields = ('name','url','description')

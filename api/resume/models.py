@@ -36,7 +36,7 @@ class Certifications(models.Model):
 
 class Award(models.Model):
     name = models.CharField(max_length=250)
-    description = models.CharField(max_length=500)
+    description = models.TextField()
     institution = models.CharField(max_length=250)
     date = models.CharField(max_length=100)
 
@@ -56,4 +56,3 @@ class Code(models.Model):
     name = models.CharField(max_length=250)
     url = models.CharField(max_length=250)
     description = models.CharField(max_length=500)
-    date = models.CharField(max_length=100)

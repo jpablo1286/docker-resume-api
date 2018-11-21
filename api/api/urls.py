@@ -9,5 +9,9 @@ urlpatterns = [
     path('skill/', views.skill_list),
     path('skill/<str:name>', views.skill_details),
     path('language/', views.language_list),
-    path('language/<str:name>', views.language_details)
+    path('language/<str:name>', views.language_details),
+    path('award/', views.award_list),
+    path('award/<str:name>', views.award_details),
+    path('expirience/', views.expirience_list),
+    path('expirience/<str:name>', views.expirience_details)
 ]
