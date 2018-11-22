@@ -13,5 +13,9 @@ urlpatterns = [
     path('award/', views.award_list),
     path('award/<str:name>', views.award_details),
     path('expirience/', views.expirience_list),
-    path('expirience/<str:name>', views.expirience_details)
+    path('expirience/<str:name>', views.expirience_details),
+    path('project/', views.project_list),
+    path('project/<str:name>', views.project_details),
+    path('code/', views.code_list),
+    path('code/<str:name>', views.code_details)
 ]

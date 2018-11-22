@@ -320,3 +320,103 @@ def expirience_details(request, name):
     elif request.method == 'DELETE':
         expirience.delete()
         return HttpResponse(status=204)
+
+@csrf_exempt
+def project_list(request):
+    """
+    List all projects
+    """
+    if request.method == 'GET':
+        projects = Project.objects.all()
+        serializer = ProjectSerializer(projects, many=True)
+        return JsonResponse(serializer.data, safe=False)
+
+    elif request.method == 'POST':
+        key = Keys.objects.first()
+        if request.META.get('HTTP_X_APIKEY') == key.key:
+            data = JSONParser().parse(request)
+            serializer = ProjectSerializer(data=data)
+            if serializer.is_valid():
+                serializer.save()
+                return JsonResponse(serializer.data, status=201)
+            return JsonResponse(serializer.errors, status=400)
+        else:
+            print(request.META)
+            return JsonResponse({"Error" : "No valid token"}, status=400)
+@csrf_exempt
+def project_details(request, name):
+
+    key = Keys.objects.first()
+    if request.META.get('HTTP_X_APIKEY') != key.key:
+        return JsonResponse({"Error" : "No valid token"}, status=400)
+
+    try:
+        project = Project.objects.get(name=name)
+    except Project.DoesNotExist:
+        return HttpResponse(status=404)
+
+    if request.method == 'GET':
+        serializer = ProjectSerializer(project)
+        return JsonResponse(serializer.data)
+
+    elif request.method == 'PUT':
+        data = JSONParser().parse(request)
+        serializer = ProjectSerializer(project, data=data)
+        if serializer.is_valid():
+            serializer.save()
+            return JsonResponse(serializer.data)
+        return JsonResponse(serializer.errors, status=400)
+
+    elif request.method == 'DELETE':
+        project.delete()
+        return HttpResponse(status=204)
+
+@csrf_exempt
+def code_list(request):
+    """
+    List all code repos
+    """
+    if request.method == 'GET':
+        code = Code.objects.all()
+        serializer = CodeSerializer(code, many=True)
+        return JsonResponse(serializer.data, safe=False)
+
+    elif request.method == 'POST':
+        key = Keys.objects.first()
+        if request.META.get('HTTP_X_APIKEY') == key.key:
+            data = JSONParser().parse(request)
+            serializer = CodeSerializer(data=data)
+            if serializer.is_valid():
+                serializer.save()
+                return JsonResponse(serializer.data, status=201)
+            return JsonResponse(serializer.errors, status=400)
+        else:
+            print(request.META)
+            return JsonResponse({"Error" : "No valid token"}, status=400)
+@csrf_exempt
+def code_details(request, name):
+
+    key = Keys.objects.first()
+    if request.META.get('HTTP_X_APIKEY') != key.key:
+        return JsonResponse({"Error" : "No valid token"}, status=400)
+
+    try:
+        code = Code.objects.get(name=name)
+    except Code.DoesNotExist:
+        return HttpResponse(status=404)
+
+    if request.method == 'GET':
+        serializer = CodeSerializer(code)
+        return JsonResponse(serializer.data)
+
+    elif request.method == 'PUT':
+        data = JSONParser().parse(request)
+        serializer = CodeSerializer(code, data=data)
+        if serializer.is_valid():
+            serializer.save()
+            return JsonResponse(serializer.data)
+        return JsonResponse(serializer.errors, status=400)
+
+    elif request.method == 'DELETE':
+        code.delete()
+        return HttpResponse(status=204)
