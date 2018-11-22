@@ -3,6 +3,7 @@ from django.views.decorators.csrf import csrf_exempt
 from rest_framework.renderers import JSONRenderer
 from rest_framework.parsers import JSONParser
 from resume.models import Summary
+from resume.models import PersonalData
 from resume.models import Degree
 from resume.models import Keys
 from resume.models import Certifications
@@ -22,6 +23,7 @@ from resume.serializers import AwardSerializer
 from resume.serializers import ProjectSerializer
 from resume.serializers import ExpirienceSerializer
 from resume.serializers import CodeSerializer
+from resume.serializers import PersonalDataSerializer
 from rest_framework import authentication
 
 @csrf_exempt
@@ -419,4 +421,58 @@ def code_details(request, name):
 
     elif request.method == 'DELETE':
         code.delete()
+        return HttpResponse(status=204)
+
+@csrf_exempt
+def personaldata_list(request):
+    """
+    List all personal data
+    """
+    key = Keys.objects.first()
+    if request.META.get('HTTP_X_APIKEY') != key.key:
+        return JsonResponse({"Error" : "No valid token"}, status=400)
+
+    if request.method == 'GET':
+        personalData = PersonalData.objects.all()
+        serializer = PersonalDataSerializer(personalData, many=True)
+        return JsonResponse(serializer.data, safe=False)
+
+    elif request.method == 'POST':
+        key = Keys.objects.first()
+        if request.META.get('HTTP_X_APIKEY') == key.key:
+            data = JSONParser().parse(request)
+            serializer = PersonalDataSerializer(data=data)
+            if serializer.is_valid():
+                serializer.save()
+                return JsonResponse(serializer.data, status=201)
+            return JsonResponse(serializer.errors, status=400)
+        else:
+            print(request.META)
+            return JsonResponse({"Error" : "No valid token"}, status=400)
+@csrf_exempt
+def personaldata_details(request, name):
+
+    key = Keys.objects.first()
+    if request.META.get('HTTP_X_APIKEY') != key.key:
+        return JsonResponse({"Error" : "No valid token"}, status=400)
+
+    try:
+        personalData = PersonalData.objects.get(fieldName=name)
+    except PersonalData.DoesNotExist:
+        return HttpResponse(status=404)
+
+    if request.method == 'GET':
+        serializer = PersonalDataSerializer(personalData)
+        return JsonResponse(serializer.data)
+
+    elif request.method == 'PUT':
+        data = JSONParser().parse(request)
+        serializer = PersonalDataSerializer(personalData, data=data)
+        if serializer.is_valid():
+            serializer.save()
+            return JsonResponse(serializer.data)
+        return JsonResponse(serializer.errors, status=400)
+
+    elif request.method == 'DELETE':
+        personalData.delete()
         return HttpResponse(status=204)
