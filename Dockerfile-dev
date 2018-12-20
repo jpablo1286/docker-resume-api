@@ -9,6 +9,5 @@ RUN bin/pip install Django
 RUN bin/pip install djangorestframework
 RUN bin/pip install mysqlclient
 RUN bin/pip install django-cors-headers
-COPY api /opt/resume-api/api
 WORKDIR /opt/resume-api/api
 CMD /opt/resume-api/bin/python /opt/resume-api/api/manage.py runserver 0.0.0.0:8000
